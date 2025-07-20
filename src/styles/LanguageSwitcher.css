@@ -12,20 +12,30 @@
 
 .language-switcher button {
   background: transparent;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc; 
   color: #ccc;
-  border-radius: 5px;
   cursor: pointer;
-  padding: 5px 10px;
-  font-weight: bold;
+  padding: 3px; 
+  width: 30px;  
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .language-switcher button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #fff; /* Muda a cor da borda no hover */
 }
 
 .language-switcher button.active {
-  background-color: #fff;
-  color: #333;
-  border-color: #fff;
+  border-color: #4da9ff; /* Borda azul para o ativo */
+  box-shadow: 0 0 10px #4da9ff;
+}
+
+/* Estilo para a imagem dentro do botão */
+.language-switcher button img {
+  width: 100%;  /* Faz a imagem preencher o botão */
+  height: auto;
 }

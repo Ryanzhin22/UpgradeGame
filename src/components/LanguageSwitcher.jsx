@@ -2,6 +2,9 @@ import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext'; 
 import '../styles/LanguageSwitcher.css'; 
 
+import BrazilFlag from '../assets/flags/brazil.png';
+import UsaFlag from '../assets/flags/usa.png';
+
 function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
 
@@ -10,15 +13,13 @@ function LanguageSwitcher() {
       <button 
         className={language === 'pt' ? 'active' : ''} 
         onClick={() => setLanguage('pt')}
-      >
-        PT
-      </button>
+        title="Português"
+      ><img src={BrazilFlag} alt="Brazil Flag" /></button>
       <button 
         className={language === 'en' ? 'active' : ''} 
         onClick={() => setLanguage('en')}
-      >
-        EN
-      </button>
+        title='English'
+      ><img src={UsaFlag} alt="USA Flag" /></button>
     </div>
   );
 }

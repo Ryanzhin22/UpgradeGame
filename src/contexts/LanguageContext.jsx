@@ -8,8 +8,15 @@ const LanguageContext = createContext();
 export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState('en');
 
-  const translate = (key) => {
-    return languages[language][key] || key; // Retorna a tradução ou a própria chave se não encontrar
+  const translate = (key, variables = {}) => {
+    let text = languages[language][key] || key; // Retorna a tradução ou a própria chave se não encontrar
+
+    for (const variableKey in variables) {
+      const placeholder = `{{${variableKey}}}`;
+      text = text.replace(placeholder, variables[variableKey]);
+    }
+
+    return text;
   };
 
   const value = {

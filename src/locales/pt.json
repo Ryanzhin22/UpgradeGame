@@ -1,8 +1,25 @@
 {
   "score": "Pontos",
   "cps": "por segundo",
+  "generate_point": "Gerar Ponto",
+  "language_menu_title": "Idiomas",
+  
+  "cost_text": "Custo: {{cost}} pontos",
+  "building_description": "Gera {{cps}} CPS.",
+
+  "building_autoClicker_name": "Auto Clicker",
+  "building_ponteiroPro_name": "Ponteiro Pro",
+  
   "upgrades_title": "Melhorias",
   "buildings_title": "Construções",
-  "generate_point": "Gerar Ponto",
-  "language_menu_title": "Idiomas"
+  "upgrade_unlockBuildings_name": "Liberar Construções",
+  "upgrade_unlockBuildings_desc": "Libera a compra de construções que geram pontos por segundo (CPS).",
+  "upgrade_floatingNumbers_name": "Números Flutuantes",
+  "upgrade_floatingNumbers_desc": "Mostra números flutuantes quando você clica.",
+  "upgrade_fancyButton_name": "Botão Chique",
+  "upgrade_fancyButton_desc": "Dá ao botão principal um visual mais agradável e uma animação de clique.",
+  "upgrade_fancyShopItems_name": "Itens de Loja Chiques",
+  "upgrade_fancyShopItems_desc": "Melhora a aparência de todos os itens na loja.",
+  "upgrade_unlockLanguages_name": "Poliglota",
+  "upgrade_unlockLanguages_desc": "Libera o menu de seleção de idiomas no canto da tela."
 }

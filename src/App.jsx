@@ -5,17 +5,16 @@ import MainContent from './components/MainContent.jsx';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import './styles/App.css';
 
-// O estado inicial do jogo, definido fora do componente.
 const initialGameState = {
   score: 0,
   cps: 0,
   clickValue: 1,
   upgrades: {
-    floatingNumbers: { purchased: false },
-    unlockBuildings: { purchased: false },
-    fancyButton: { purchased: false },
-    fancyShopItems: { purchased: false },
-    unlockLanguages: { purchased: false },
+    unlockBuildings: { purchased: false, unlocked: false },
+    floatingNumbers: { purchased: false, unlocked: false },
+    fancyButton: { purchased: false, unlocked: false },
+    fancyShopItems: { purchased: false, unlocked: false },
+    unlockLanguages: { purchased: false, unlocked: false },
   },
   buildings: {
     autoClicker: { owned: 0, baseCost: 25, cps: 1 },
@@ -42,11 +41,30 @@ function App() {
       setGameState(prev => ({ ...prev, score: prev.score + prev.cps }));
     }, 1000);
     return () => clearInterval(gameInterval);
-  }, [gameState.cps]); // Roda de novo se o CPS mudar
+  }, [gameState.cps]); 
 
   useEffect(() => {
     recalculateCPS();
   }, [gameState.buildings, recalculateCPS]);
+
+  useEffect(() => {
+    const newUpdates = {};
+
+    for (const upgradeId in upgradesData) {
+      const upgradeInfo = upgradesData[upgradeId];
+      const upgradeState = gameState.upgrades[upgradeId];
+
+      if (gameState.score >= upgradeInfo.requiredScore && !upgradeState.unlocked) {
+        newUpdates[upgradeId] = { ...upgradeState, unlocked: true };
+      }
+    }
+
+    if (Object.keys(newUpdates).length > 0) {
+      setGameState(prev => ({...prev, upgrades: {...prev.upgrades, ...newUpdates,},
+    }));
+  }
+
+  }, [gameState.score, gameState.upgrades]);
 
   // Função para o clique principal
   const handleManualClick = (event) => {
@@ -65,22 +83,17 @@ function App() {
     }
   };
 
+
 const purchaseUpgrade = (upgradeId) => {
     const upgradeInfo = upgradesData[upgradeId]; 
     const upgradeStatus = gameState.upgrades[upgradeId];
 
     if (gameState.score >= upgradeInfo.cost && !upgradeStatus.purchased) {
-        setGameState(prev => ({
-            ...prev,
-            score: prev.score - upgradeInfo.cost,
-            upgrades: {
-                ...prev.upgrades,
-                [upgradeId]: { ...upgradeStatus, purchased: true },
-            },
+        setGameState(prev => ({...prev, score: prev.score - upgradeInfo.cost, upgrades: { ...prev.upgrades, [upgradeId]: { ...upgradeStatus, purchased: true },},
         }));
 
-        if (upgradeId === 'strongerClicks1') {
-            setGameState(prev => ({ ...prev, clickValue: 2 }));
+        if (upgradeInfo.applyEffect) {
+          setGameState(prev => upgradeInfo.applyEffect(prev));
         }
     }
 };
