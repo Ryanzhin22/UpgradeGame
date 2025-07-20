@@ -1,0 +1,31 @@
+.language-switcher {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 102; /* Acima do menu e da sidebar */
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+}
+
+.language-switcher button {
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+
+.language-switcher button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.language-switcher button.active {
+  background-color: #fff;
+  color: #333;
+  border-color: #fff;
+}
