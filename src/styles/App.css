@@ -96,3 +96,57 @@ hr {
     border-top: 1px solid #444;
     margin: 20px 0;
 }
+
+/* src/App.css */
+
+/* O container principal do App.
+   position: relative é CRUCIAL para que a órbita aconteça ao redor dele. */
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #333;
+  overflow: hidden; /* Esconde qualquer coisa que saia da tela */
+}
+
+/* Mock de MainContent para visualização */
+.main-content-mock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 50px;
+  background-color: #555;
+  border-radius: 20px;
+  text-align: center;
+}
+.main-content-mock button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* O wrapper para os cursores. Ele define o centro da órbita. */
+.cursors-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+}
+
+/* O container que GIRA. Ele é posicionado no centro do wrapper. */
+.orbit-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* O elemento que EMPURRA o cursor para fora do centro, criando o raio da órbita. */
+.orbiting-cursor {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* Mude o valor de translateX para alterar a distância da órbita */
+  transform: translateX(250px);
+}
