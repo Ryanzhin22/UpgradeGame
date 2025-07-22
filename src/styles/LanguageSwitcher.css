@@ -2,8 +2,7 @@
   position: fixed;
   top: 15px;
   right: 15px;
-  z-index: 102; /* Acima do menu e da sidebar */
-  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 102;
   border-radius: 8px;
   padding: 5px;
   display: flex;
@@ -12,7 +11,7 @@
 
 .language-switcher button {
   background: transparent;
-  border: 2px solid #ccc; 
+  border: 2px solid #ffffff; 
   color: #ccc;
   cursor: pointer;
   padding: 3px; 
@@ -26,16 +25,15 @@
 }
 
 .language-switcher button:hover {
-  border-color: #fff; /* Muda a cor da borda no hover */
+  border-color: #fff;
 }
 
 .language-switcher button.active {
-  border-color: #4da9ff; /* Borda azul para o ativo */
-  box-shadow: 0 0 10px #4da9ff;
+  border-color: #8f8e8e;
+  box-shadow: 0 0 10px #929292;
 }
 
-/* Estilo para a imagem dentro do botão */
 .language-switcher button img {
-  width: 100%;  /* Faz a imagem preencher o botão */
+  width: 100%;  
   height: auto;
 }

@@ -12,14 +12,27 @@
   
   "upgrades_title": "Melhorias",
   "buildings_title": "Construções",
+
+  "footer_copyright": "© {{year}} Upgrade Everything.",
+  "upgrade_unlockFooter_name": "Desbloquear Rodapé",
+  "upgrade_unlockFooter_desc": "Adiciona uma barra de informações no rodapé do jogo.",
+
+  "upgrade_branding_name": "Marca",
+  "upgrade_branding_desc": "Você sabe qual o título do jogo?",
   "upgrade_unlockBuildings_name": "Liberar Construções",
   "upgrade_unlockBuildings_desc": "Libera a compra de construções que geram pontos por segundo (CPS).",
   "upgrade_floatingNumbers_name": "Números Flutuantes",
   "upgrade_floatingNumbers_desc": "Mostra números flutuantes quando você clica.",
   "upgrade_fancyButton_name": "Botão Chique",
   "upgrade_fancyButton_desc": "Dá ao botão principal um visual mais agradável e uma animação de clique.",
+  "upgrade_strongerClicks1_name": "Cliques Mais Fortes",
+  "upgrade_strongerClicks1_desc": "Aumenta o valor de cada clique em 1.",
+  "upgrade_spinningCursors_name": "Cursors Giratórios",
+  "upgrade_spinningCursors_desc": "Adiciona cursores giratórios ao redor do botão principal para um efeito visual RADICAL.",
   "upgrade_fancyShopItems_name": "Itens de Loja Chiques",
   "upgrade_fancyShopItems_desc": "Melhora a aparência de todos os itens na loja.",
+  "upgrade_unlockSounds_name": "Liberar Sons",
+  "upgrade_unlockSounds_desc": "Libera efeitos sonoros para cliques e melhorias.",
   "upgrade_unlockLanguages_name": "Poliglota",
   "upgrade_unlockLanguages_desc": "Libera o menu de seleção de idiomas no canto da tela."
 }

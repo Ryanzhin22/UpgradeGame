@@ -1,0 +1,173 @@
+.reaction-game-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Initial Screen */
+.reaction-game-container h3, .reaction-game-container p{
+  margin: 0px;
+}
+
+.bugHunterTitle{
+  font-size: 30px;
+  padding: 15px 0;
+}
+
+.bugHunterDifficultyChoice{
+  padding-bottom: 10px;
+}
+
+.bugHunterDesc{
+  padding: 10px 0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-group button {
+  width: 105px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #c2c2c2;
+  color: rgb(199, 199, 199);
+  transition: 0.2s ease;
+  margin: 1px;
+}
+
+.button-group button:hover, .button-group-final button:hover {
+  transform: scale(1.05);
+  background-color: #c2c2c2;
+  transition: .3s ease;
+  color: white;
+}
+
+.button-group button.active, .button-group-final button.active {
+  background-color: #333333; 
+  border: 2px solid #333333;
+  color: white;
+}
+
+.start-button {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: #6b6b6b;
+  color: white;
+  display: block;
+  transition: .3s ease;
+}
+
+.start-button:hover {
+  background-color: #555555;
+  transition: .3s ease;
+  transform: scale(1.01);
+}
+
+/* Game Screen */
+
+.game-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.game-area {
+  height: 250px;
+  flex-grow: 1; 
+  position: relative; 
+  background-color: #e0e0e0;
+  border: 2px solid #aaa;
+  border-radius: 5px;
+  overflow: hidden; 
+}
+
+.bug {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: #ff4757; /* Cor do bug */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  font-size: 20px; /* Tamanho do ícone do bug */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.bug:hover {
+  transform: scale(1.2);
+}
+
+
+/* Final Screen */
+.game-over-screen {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.redeem-button {
+  transform: none !important;
+  transition: .3s ease ;
+  width: 200px;
+  font-size: 14px !important;
+}
+ 
+.redeem-button:hover{
+  font-weight: bold;
+  transition: .3s ease;
+} 
+
+.play-again-button {
+  transform: none !important;
+  width: 200px;
+  font-size: 14px !important;
+}
+
+.play-again-button:hover {
+  font-weight: bold;
+}
+
+.bugHunterFinalTitle{
+  font-size: 30px;
+}
+
+.bugHunterFinalDesc{
+  font-size: 13px;
+  padding-bottom: 30px;
+  padding-top: 3px;
+  color: #939493;
+}
+
+
+.button-group-final {
+  display: flex;
+  justify-content: space-around;
+}
+
+.button-group-final button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #c2c2c2;
+  color: rgb(199, 199, 199);
+  transition: 0.2s ease;
+  margin: 1px;
+}

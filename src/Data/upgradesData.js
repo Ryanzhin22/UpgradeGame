@@ -1,4 +1,20 @@
 export const upgradesData = {
+  branding: {
+    id: 'branding',
+    nameKey: 'upgrade_branding_name',
+    descriptionKey: 'upgrade_branding_desc',
+    cost: 10,
+    requiredScore: 0,
+    applyEffect: (gameState) => {
+      document.title = 'Upgrade Everything!';
+      const favicon = document.getElementById('favicon');
+      if (favicon) {
+        favicon.href = '/favicon.png';
+      }
+      return gameState;
+    }
+  },
+
   unlockBuildings: {
     id: 'unlockBuildings',
     nameKey: 'upgrade_unlockBuildings_name',
@@ -30,25 +46,67 @@ export const upgradesData = {
       return { ...gameState, clickValue: gameState.clickValue + 1 };
     }
   },
+  spinningCursors: {
+    id: 'spinningCursors',
+    nameKey: 'upgrade_spinningCursors_name',
+    descriptionKey: 'upgrade_spinningCursors_desc',
+    cost: 175,
+    requiredScore: 80,
+  },
   fancyShopItems: {
     id: 'fancyShopItems',
     nameKey: 'upgrade_fancyShopItems_name',
     descriptionKey: 'upgrade_fancyShopItems_desc',
     cost: 250, 
-    requiredScore: 80,
+    requiredScore: 150,
   },
   unlockSounds: {
     id: 'unlockSounds',
     nameKey: 'upgrade_unlockSounds_name',
     descriptionKey: 'upgrade_unlockSounds_desc',
     cost: 255,
-    requiredScore: 88,
+    requiredScore: 190,
   },
   unlockLanguages: {
     id: 'unlockLanguages',
     nameKey: 'upgrade_unlockLanguages_name',
     descriptionKey: 'upgrade_unlockLanguages_desc',
-    cost: 300, 
-    requiredScore: 100,
+    cost: 500, 
+    requiredScore: 200,
+  },
+  unlockFooter: {
+    id: 'unlockFooter',
+    nameKey: 'upgrade_unlockFooter_name',
+    descriptionKey: 'upgrade_unlockFooter_desc',
+    cost: 600,
+    requiredScore: 300,
+  },
+  strongerClicks2: {
+    id: 'strongerClicks2',
+    nameKey: 'upgrade_strongerClicks2_name',
+    descriptionKey: 'upgrade_strongerClicks2_desc',
+    cost: 1500,
+    requiredScore: 500,
+    applyEffect: (gameState) => {
+      return { ...gameState, clickValue: gameState.clickValue + 8 };
+    }
+  },
+  criticalClicks: {
+    id: 'criticalClicks',
+    nameKey: 'upgrade_criticalClicks_name',
+    descriptionKey: 'upgrade_criticalClicks_desc',
+    cost: 2500,
+    requiredScore: 1000,
+  },
+  gameBackground: {
+    id: 'gameBackground',
+    nameKey: 'upgrade_gameBackground_name',
+    descriptionKey: 'upgrade_gameBackground_desc',
+    cost: 5000,
+    requiredScore: 2000,
+    applyEffect: (gameState) => {
+      document.body.classList.add('background-active');
+      return gameState;
+    }
   },
 };

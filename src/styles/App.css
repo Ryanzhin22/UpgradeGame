@@ -10,6 +10,14 @@ body {
    -moz-user-select: none;
    -ms-user-select: none;
    user-select: none;
+   transition: background-color 1s ease;
+}
+
+body.background-active {
+    background-image: url('/background.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
 }
 
 /* Conteúdo principal */
@@ -84,6 +92,12 @@ body {
     pointer-events: none;
     animation: float-up 1.5s ease-out forwards;
     z-index: 1000;
+    transition: color 0.2s; 
+}
+
+.floating-number.critical {
+  color: #ff4d4d; 
+  transform: scale(1.2); 
 }
 
 /* Utilitários */
@@ -97,19 +111,15 @@ hr {
     margin: 20px 0;
 }
 
-/* src/App.css */
-
-/* O container principal do App.
-   position: relative é CRUCIAL para que a órbita aconteça ao redor dele. */
+/* Main Container + Cursors Animation */
 .app-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   background-color: #333;
-  overflow: hidden; /* Esconde qualquer coisa que saia da tela */
+  overflow: hidden; 
 }
 
-/* Mock de MainContent para visualização */
 .main-content-mock {
   position: absolute;
   top: 50%;
@@ -126,7 +136,6 @@ hr {
   cursor: pointer;
 }
 
-/* O wrapper para os cursores. Ele define o centro da órbita. */
 .cursors-wrapper {
   position: absolute;
   top: 50%;
@@ -135,18 +144,15 @@ hr {
   height: 1px;
 }
 
-/* O container que GIRA. Ele é posicionado no centro do wrapper. */
 .orbit-container {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-/* O elemento que EMPURRA o cursor para fora do centro, criando o raio da órbita. */
 .orbiting-cursor {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* Mude o valor de translateX para alterar a distância da órbita */
   transform: translateX(250px);
 }

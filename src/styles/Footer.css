@@ -1,0 +1,27 @@
+.game-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #222; /* Fundo escuro */
+  color: #aaa; /* Cor do texto acinzentado */
+  padding: 5px 20px; /* Espaçamento interno (vertical e horizontal) */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Sombra na parte superior */
+  text-align: center;
+  font-size: 0.8em;
+  animation: slideUpFooter 0.5s ease-out; /* Animação de entrada */
+}
+
+.game-footer p {
+  margin: 0; /* Remove a margem padrão do parágrafo */
+}
+
+/* Animação para o rodapé deslizar de baixo para cima */
+@keyframes slideUpFooter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

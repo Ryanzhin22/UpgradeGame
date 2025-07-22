@@ -1,0 +1,43 @@
+.slide-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease-in-out; 
+  z-index: -1;
+}
+
+.slide-container.sidebar-open {
+  transform: translate(calc(-50% + 320px), -50%); 
+}
+
+.rotation-container {
+  width: 100%;
+  height: 100%;
+  animation: orbit 30s linear infinite;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbiting-cursor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  margin-left: -15px;
+}
+
+.cursor-image {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-60deg);
+}
