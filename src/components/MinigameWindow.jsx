@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/MinigameWindow.css';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function MinigameWindow({ title, children, onClose, position, onPositionChange }) {
+function MinigameWindow({ children, onClose, position, onPositionChange }) {
+  const { translate } = useLanguage();
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
@@ -42,7 +44,7 @@ function MinigameWindow({ title, children, onClose, position, onPositionChange }
   return (
     <div className="minigame-window" style={{ top: position.y, left: position.x }}>
       <div className="title-bar" onMouseDown={handleMouseDown}>
-        <span className="title">{title}</span>
+        <span className="title">{translate('minigame_reaction_title')}</span>
         <div className="window-controls">
           <button className="close-btn" onClick={onClose}>×</button>
         </div>

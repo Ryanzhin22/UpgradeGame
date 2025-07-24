@@ -11,7 +11,7 @@
 
 .language-switcher button {
   background: transparent;
-  border: 2px solid #ffffff; 
+  border: 2px solid #929292; 
   color: #ccc;
   cursor: pointer;
   padding: 3px; 
@@ -25,12 +25,12 @@
 }
 
 .language-switcher button:hover {
-  border-color: #fff;
+  border-color: #a1a1a1;
 }
 
 .language-switcher button.active {
-  border-color: #8f8e8e;
-  box-shadow: 0 0 10px #929292;
+  border-color: #6e6e6e;
+  box-shadow: 0 0 10px #686868;
 }
 
 .language-switcher button img {

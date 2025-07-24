@@ -1,16 +1,29 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { upgradesData } from './Data/upgradesData.js';
+import { minigamesData } from './Data/minigamesData.js';
+import { playSound } from './utils/audioManager';
+import { achievementsData } from './Data/achievementsData.js';
 import Sidebar from './components/Sidebar.jsx';
 import MainContent from './components/MainContent.jsx';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import Footer from './components/Footer.jsx';
-import { playSound } from './utils/audioManager';
-import './styles/App.css';
 import SpinningCursors from './components/SpinningCursors.jsx';
 import MinigameIcon from './components/MinigameIcon.jsx';
 import MinigameWindow from './components/MinigameWindow.jsx';
-import ReactionGame from './components/ReactionGame.jsx';
-import { minigamesData } from './Data/minigamesData.js';
+import StatsIcon from './components/StatsIcon.jsx';
+import StatsModal from './components/StatsModal.jsx';
+import AchievementsIcon from './components/AchievementsIcon.jsx';
+import AchievementsModal from './components/AchievementsModal.jsx';
+import BuffsPanel from './components/BuffsPanel.jsx';
+import './styles/App.css';
+
+const getInitialAchievements = () => {
+  const achievements = {};
+  for (const achId in achievementsData) {
+    achievements[achId] = false; // Todas começam como 'false' (bloqueadas)
+  }
+  return achievements;
+};
 
 const initialGameState = {
   score: 0,
@@ -30,16 +43,37 @@ const initialGameState = {
     criticalClicks: { purchased: false, unlocked: false },
     gameBackground: { purchased: false, unlocked: false },
     unlockFooter: { purchased: false, unlocked: false },
+    unlockMinigame1: { purchased: false, unlocked: false },
+    unlockStats: { purchased: false, unlocked: false },
+    unlockAchievements: { purchased: false, unlocked: false },
+    unlockBuffs: { purchased: false, unlocked: false },
   },
   buildings: {
     autoClicker: { owned: 0, baseCost: 20, cps: 1 },
     ponteiroPro: { owned: 0, baseCost: 100, cps: 5 },
   },
+  stats: {
+    totalClicks: 0,
+    pointsFromClicks: 0,
+    pointsFromMinigames: 0,
+    pointsFromBuildings: {
+      autoClicker: 0,
+      ponteiroPro: 0,
+    },
+  },
+  achievements: getInitialAchievements(),
+  buffs: {
+    clickFrenzy: { activeUntil: 0, power: 2 }, 
+    cpsBoost: { activeUntil: 0, power: 1.5 }, 
+    criticalLuck: { activeUntil: 0, power: 0.5 }, 
+  },
 };
 
 function App() {
   const [gameState, setGameState] = useState(initialGameState);
-  const [isSidebarOpen, setSidebarOpen] = useState(false); // começa fechada
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [isAchievementsModalOpen, setIsAchievementsModalOpen] = useState(false);
   const [floatingNumbers, setFloatingNumbers] = useState([]);
   const [minigamesState, setMinigamesState] = useState({
     reactionGame: {
@@ -66,10 +100,32 @@ function App() {
     }));
   };
 
-  const handleGameEnd = (minigameScore) => {
-    const reward = minigameScore * 1000;
+  const handleGameEnd = (minigameScore, difficulty) => {
+    let rewardMultiplier = 1; 
+
+    switch (difficulty) {
+      case 'facil':
+        rewardMultiplier = 100; 
+        break;
+      case 'medio':
+        rewardMultiplier = 250; 
+        break;
+      case 'dificil':
+        rewardMultiplier = 1250; 
+        break;
+      default:
+        rewardMultiplier = 1000;
+    }
+
+    const reward = minigameScore * rewardMultiplier;
+
     if (reward > 0) {
-      setGameState(prev => ({ ...prev, score: prev.score + reward }));
+      setGameState(prev => ({ ...prev,
+        score: prev.score + reward,
+        stats: { ...prev.stats,
+          pointsFromMinigames: prev.stats.pointsFromMinigames + reward,
+        },
+      }));
     }
   };
 
@@ -81,8 +137,45 @@ function App() {
       const building = gameState.buildings[buildingId];
       totalCPS += building.owned * building.cps;
     }
+
+    if (gameState.buffs.cpsBoost.activeUntil > Date.now()) {
+      totalCPS *= gameState.buffs.cpsBoost.power;
+    }
+
     setGameState(prev => ({ ...prev, cps: totalCPS }));
-  }, [gameState.buildings]);
+  }, [gameState.buildings, gameState.buffs]);
+
+  // Buff Management
+  useEffect(() => {
+    const buffInterval = setInterval(() => {
+      let needsUpdate = false;
+      for (const buffId in gameState.buffs) {
+        if (gameState.buffs[buffId].activeUntil < Date.now()) {
+          needsUpdate = true;
+        }
+      }
+      if (needsUpdate) {
+        setGameState(prev => ({ ...prev }));
+      }
+    }, 1000);
+
+    return () => clearInterval(buffInterval);
+  }, [gameState.buffs]);
+
+  // Buff Activation
+  const activateBuff = (buffId, chargedSeconds) => {
+    const durationMs = chargedSeconds * 1000;
+    setGameState(prev => ({
+      ...prev,
+      buffs: {
+        ...prev.buffs,
+        [buffId]: {
+          ...prev.buffs[buffId],
+          activeUntil: Date.now() + durationMs,
+        },
+      },
+    }));
+  };
 
    // CHEAT 
   useEffect(() => {
@@ -101,13 +194,47 @@ function App() {
     };
   }, []); 
 
+  // Achievements
+  useEffect(() => {
+    const newAchievements = {};
+    for (const achId in achievementsData) {
+      if (!gameState.achievements[achId] && achievementsData[achId].condition(gameState)) {
+        newAchievements[achId] = true;
+      }
+    }
+
+    if (Object.keys(newAchievements).length > 0) {
+      setGameState(prev => ({...prev, achievements: { ...prev.achievements, ...newAchievements, },
+    }));
+      // Opcional: Adicionar um som de "conquista desbloqueada"!
+    }
+  }, [gameState])
+
   // Loop Game 
   useEffect(() => {
     const gameInterval = setInterval(() => {
-      setGameState(prev => ({ ...prev, score: prev.score + prev.cps }));
+      let pointsFromBuildingsThisSecond = {};
+      let totalPointsThisSecond = 0;
+
+      for (const buildingId in gameState.buildings) {
+        const building = gameState.buildings[buildingId];
+        const points = building.owned * building.cps;
+        pointsFromBuildingsThisSecond[buildingId] = points;
+        totalPointsThisSecond += points;
+      }
+
+      setGameState(prev => ({...prev, score: prev.score + totalPointsThisSecond,
+        stats: {...prev.stats,
+          pointsFromBuildings: {
+            ...prev.stats.pointsFromBuildings,
+            autoClicker: prev.stats.pointsFromBuildings.autoClicker + (pointsFromBuildingsThisSecond.autoClicker || 0),
+            ponteiroPro: prev.stats.pointsFromBuildings.ponteiroPro + (pointsFromBuildingsThisSecond.ponteiroPro || 0),
+          },
+        },
+      }));
     }, 1000);
     return () => clearInterval(gameInterval);
-  }, [gameState.cps]); 
+  }, [gameState.buildings, gameState.cps]);
 
   useEffect(() => {
     recalculateCPS();
@@ -137,15 +264,28 @@ function App() {
   const handleManualClick = (event) => {
     let pointsToAdd = gameState.clickValue;
     let isCritical = false;
+    let criticalChance = 0.1; 
+
+    if (gameState.buffs.criticalLuck.activeUntil > Date.now()) {
+      criticalChance = gameState.buffs.criticalLuck.power; // 50%
+    }
     
-    if (gameState.upgrades.criticalClicks.purchased) {
-      if (Math.random() < 0.1) {
-        isCritical = true;
-        pointsToAdd *= 2.7; 
-      }
+    if (gameState.buffs.clickFrenzy.activeUntil > Date.now()) {
+      pointsToAdd *= gameState.buffs.clickFrenzy.power;
     }
 
-    setGameState(prev => ({ ...prev, score: prev.score + pointsToAdd }));
+    if (gameState.upgrades.criticalClicks.purchased && Math.random() < criticalChance) {
+      isCritical = true;
+      pointsToAdd *= 2.7;
+    }
+
+    setGameState(prev => ({ ...prev, score: prev.score + pointsToAdd,
+      stats: { 
+        ...prev.stats,
+        totalClicks: prev.stats.totalClicks + 1,
+        pointsFromClicks: prev.stats.pointsFromClicks + pointsToAdd,
+      },
+    }));
     
     if (gameState.upgrades.unlockSounds?.purchased) {
       playSound('click');
@@ -232,10 +372,27 @@ function App() {
       {/* Language */}
       {gameState.upgrades.unlockLanguages?.purchased && <LanguageSwitcher />}
 
+      {gameState.upgrades.unlockStats.purchased && (
+        <StatsIcon onClick={() => setIsStatsModalOpen(true)} />
+      )}
+      {isStatsModalOpen && (
+        <StatsModal stats={gameState.stats} onClose={() => setIsStatsModalOpen(false)} />
+      )}
+
+      {gameState.upgrades.unlockAchievements.purchased && (
+        <AchievementsIcon onClick={() => setIsAchievementsModalOpen(true)} />
+      )}
+      {isAchievementsModalOpen && (
+        <AchievementsModal unlockedAchievements={gameState.achievements} onClose={() => setIsAchievementsModalOpen(false)} />
+      )}
+
       {gameState.upgrades.spinningCursors.purchased && (
         <SpinningCursors cursorCount={cursorCount} isSidebarOpen={isSidebarOpen} />
       )}
 
+      {gameState.upgrades.unlockBuffs.purchased && (
+        <BuffsPanel gameState={gameState} activateBuff={activateBuff} />
+      )}
 
       <Sidebar 
         isOpen={isSidebarOpen} 
@@ -256,7 +413,9 @@ function App() {
     
       {gameState.upgrades.unlockFooter.purchased && <Footer />}
 
-      <MinigameIcon onClick={() => openMinigame('reactionGame')} />
+      {gameState.upgrades.unlockMinigame1.purchased && (
+        <MinigameIcon onClick={() => openMinigame('reactionGame')} />
+      )}
 
       {Object.keys(minigamesState).map(gameId => {
         const gameState = minigamesState[gameId];
@@ -266,8 +425,7 @@ function App() {
 
         return (
           <MinigameWindow
-            key={gameId} 
-            title={gameData.title}
+            key={gameId}
             position={gameState.position}
             onClose={() => closeMinigame(gameId)}
             onPositionChange={(newPos) => updateMinigamePosition(gameId, newPos)}>

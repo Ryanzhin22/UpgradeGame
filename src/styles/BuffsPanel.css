@@ -1,0 +1,86 @@
+.buffs-panel-container {
+  position: fixed;
+  top: 50%;
+  right: -230px; /* Começa escondido */
+  transform: translateY(-50%);
+  z-index: 100;
+  transition: right 0.4s ease-in-out;
+}
+
+.buffs-panel-container.open {
+  right: 0;
+}
+
+.panel-toggle-button {
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 60px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.buffs-panel {
+  width: 200px;
+  background-color: #d3d3d3;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buffs-panel h4 {
+  text-align: center;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+/* Estilo do Botão de Buff */
+.buff-button {
+  position: relative;
+  background-color: #888;
+  border: 2px solid #666;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+}
+
+.buff-button.active {
+  background-color: #ffd700;
+  border-color: #e6c200;
+  cursor: not-allowed;
+}
+
+.charge-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.1s linear;
+}
+
+.buff-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+
+.buff-timer {
+  margin-left: auto;
+  font-weight: bold;
+}

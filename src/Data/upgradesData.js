@@ -102,11 +102,40 @@ export const upgradesData = {
     id: 'gameBackground',
     nameKey: 'upgrade_gameBackground_name',
     descriptionKey: 'upgrade_gameBackground_desc',
-    cost: 5000,
+    cost: 3555,
     requiredScore: 2000,
     applyEffect: (gameState) => {
       document.body.classList.add('background-active');
       return gameState;
     }
   },
+  unlockMinigame1:{
+    id: 'unlockMinigame1',
+    nameKey: 'upgrade_unlockMinigame1_name',
+    descriptionKey: 'upgrade_unlockMinigame1_desc',
+    cost: 4500,
+    requiredScore: 2550,
+  },
+  unlockStats: {
+    id: 'unlockStats',
+    nameKey: 'upgrade_unlockStats_name',
+    descriptionKey: 'upgrade_unlockStats_desc',
+    cost: 6666,
+    requiredScore: 4000,
+  },
+  unlockAchievements: {
+    id: 'unlockAchievements',
+    nameKey: 'upgrade_unlockAchievements_name',
+    descriptionKey: 'upgrade_unlockAchievements_desc',
+    cost: 8000,
+    requiredScore: 4500,
+  },
+  unlockBuffs: {
+    id: 'unlockBuffs',
+    nameKey: 'upgrade_unlockBuffs_name',
+    descriptionKey: 'upgrade_unlockBuffs_desc',
+    cost: 10000,
+    requiredScore: 5000,
+  },
+  
 };

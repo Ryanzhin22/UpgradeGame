@@ -1,0 +1,23 @@
+.stats-icon {
+  position: fixed;
+  top: 60px; 
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid #616161;
+  color: #616161;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 102;
+  transition: all 0.2s ease;
+}
+
+.stats-icon:hover {
+  border-color: #3d3d3d;
+  transform: scale(1.1);
+}

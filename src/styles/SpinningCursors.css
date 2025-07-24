@@ -26,17 +26,17 @@
   }
 }
 
-.orbiting-cursor {
+.rotation-container .orbiting-cursor {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 30px;
-  height: 30px;
+  width: 30px; /* Garante que a largura seja sempre 30px */
+  height: 30px; /* Garante que a altura seja sempre 30px */
   margin-top: -15px;
   margin-left: -15px;
 }
 
-.cursor-image {
+.rotation-container .cursor-image {
   width: 100%;
   height: 100%;
   transform: rotate(-60deg);

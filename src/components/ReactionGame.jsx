@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaBug } from 'react-icons/fa';
+import { useLanguage } from '../contexts/LanguageContext';
 import '../styles/ReactionGame.css';
 
 function ReactionGame({ onGameEnd, onClose }) {
+  const { translate } = useLanguage();
   const [isActive, setIsActive] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [difficulty, setDifficulty] = useState('facil'); // Estado para a dificuldade (padrão: fácil)
@@ -69,13 +71,13 @@ function ReactionGame({ onGameEnd, onClose }) {
   };
 
   const handleRedeem = () => {
-    onGameEnd(score);
+    onGameEnd(score, difficulty);
     onClose();
   };
 
   const handlePlayAgain = () => {
-    onGameEnd(score);
-    startGame(difficulty); // Mantém a dificuldade atual ao jogar novamente
+    onGameEnd(score, difficulty);
+    startGame();
   };
 
   const setGameDifficulty = (newDifficulty) => {
@@ -93,11 +95,11 @@ function ReactionGame({ onGameEnd, onClose }) {
   if (isGameOver) {
     return (
       <div className="reaction-game-container game-over-screen">
-        <h3 className='bugHunterFinalTitle'>Fim de Jogo!</h3>
-        <p className='bugHunterFinalDesc'>Você fez: {score} pontos!</p>
+        <h3 className='bugHunterFinalTitle'>{translate('minigame_reaction_end_title')}</h3>
+        <p className='bugHunterFinalDesc'>{translate('minigame_reaction_end_desc', { score: score })}</p>
         <div className="button-group-final">
-          <button className="redeem-button" onClick={handleRedeem}>Resgatar Pontos ({score})</button>
-          <button className="play-again-button" onClick={handlePlayAgain}>Jogar Novamente</button>
+          <button className="redeem-button" onClick={handleRedeem}>{translate('minigame_reaction_redeem')} ({score})</button>
+          <button className="play-again-button" onClick={handlePlayAgain}>{translate('minigame_reaction_play_again')}</button>
         </div>
       </div>
     );
@@ -106,15 +108,15 @@ function ReactionGame({ onGameEnd, onClose }) {
   if (!isActive) {
     return (
       <div className="reaction-game-container">
-        <h3 className='bugHunterTitle'>Caça ao Bug!</h3>
-        <p className='bugHunterDifficultyChoice'>Escolha a dificuldade:</p>
+        <h3 className='bugHunterTitle'>{translate('minigame_reaction_title')}</h3>
+        <p className='bugHunterDifficultyChoice'>{translate('minigame_reaction_difficulty_choice')}</p>
         <div className="button-group">
-          <button className={difficulty === 'facil' ? 'active' : ''} onClick={() => setGameDifficulty('facil')}>Fácil</button>
-          <button className={difficulty === 'medio' ? 'active' : ''} onClick={() => setGameDifficulty('medio')}>Médio</button>
-          <button className={difficulty === 'dificil' ? 'active' : ''} onClick={() => setGameDifficulty('dificil')}>Difícil</button>
+          <button className={difficulty === 'facil' ? 'active' : ''} onClick={() => setGameDifficulty('facil')}>{translate('minigame_reaction_difficulty_easy')}</button>
+          <button className={difficulty === 'medio' ? 'active' : ''} onClick={() => setGameDifficulty('medio')}>{translate('minigame_reaction_difficulty_medium')}</button>
+          <button className={difficulty === 'dificil' ? 'active' : ''} onClick={() => setGameDifficulty('dificil')}>{translate('minigame_reaction_difficulty_hard')}</button>
         </div>
-        <p className='bugHunterDesc'>Clique no bug o máximo de vezes que puder em {timeLeft} segundos.</p>
-        <button className="start-button" onClick={() => startGame()}>Iniciar</button>
+        <p className='bugHunterDesc'>{translate('minigame_reaction_desc', { timeLeft: timeLeft })}</p>
+        <button className="start-button" onClick={() => startGame()}>{translate('minigame_reaction_start')}</button>
       </div>
     );
   }
@@ -122,8 +124,8 @@ function ReactionGame({ onGameEnd, onClose }) {
   return (
     <div className="reaction-game-container">
       <div className="game-stats">
-        <span>Tempo: {timeLeft}s</span>
-        <span>Pontos: {score}</span>
+        <span>{translate('minigame_reaction_time')}: {timeLeft}s</span>
+        <span>{translate('minigame_reaction_score')}: {score}</span>
       </div>
       <div className="game-area">
         {bugVisible && (
