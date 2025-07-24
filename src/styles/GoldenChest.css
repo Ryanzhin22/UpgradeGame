@@ -1,0 +1,41 @@
+.golden-chest {
+  position: fixed; 
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
+  background-color: gold;
+  border: 3px solid darkorange;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 20px 5px gold;
+  animation: fadeInOut 13s ease-in-out forwards;
+  transition: transform 0.2s ease;
+}
+
+.golden-chest:hover {
+  transform: scale(1.1);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}

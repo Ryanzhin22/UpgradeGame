@@ -3,17 +3,106 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #222; /* Fundo escuro */
-  color: #aaa; /* Cor do texto acinzentado */
-  padding: 5px 20px; /* Espaçamento interno (vertical e horizontal) */
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Sombra na parte superior */
-  text-align: center;
+  background-color: #222;
+  color: #aaa;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
   font-size: 0.8em;
-  animation: slideUpFooter 0.5s ease-out; /* Animação de entrada */
+  padding: 5px 20px; /* Mantém a altura pequena */
+  animation: slideUpFooter 0.5s ease-out;
 }
 
+/* Layout para a versão simples */
 .game-footer p {
-  margin: 0; /* Remove a margem padrão do parágrafo */
+  margin: 0;
+  text-align: center;
+}
+
+/* Layout para a versão MELHORADA */
+.game-footer.upgraded {
+  display: flex;
+  align-items: center;
+}
+
+.game-footer.upgraded .footer-left p {
+  text-align: left;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaço entre os itens */
+  padding-left: 10px;
+}
+
+.footer-link, .footer-button {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px; /* Deixa os ícones um pouco maiores */
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+  gap:5px;
+  border-bottom: 1px dotted #aaa;
+  justify-content: center;
+}
+
+.footer-link:hover, .footer-button:hover {
+  color: #fff;
+}
+
+.footer-button {
+  
+  padding: 2px 0;
+}
+
+/* Lógica do Dropdown */
+.other-links-container {
+  position: relative; /* Contexto para o menu absoluto */
+}
+
+.dropdown-menu {
+  position: absolute;
+  bottom: 100%; /* Posiciona o menu ACIMA do botão */
+  right: 1;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 10px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: slideUpMenu 0.2s ease-out;
+}
+
+.dropdown-menu a {
+  color: #aaa;
+  text-decoration: none;
+  padding: 5px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdown-menu a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+@keyframes slideUpMenu {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Animação para o rodapé deslizar de baixo para cima */

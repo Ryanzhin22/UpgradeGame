@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/BuffsPanel.css'; // Reutiliza o mesmo CSS
 
-const MAX_CHARGE_SECONDS = 5;
+const MAX_CHARGE_SECONDS = 8;
 
 function BuffButton({ buffId, buffInfo, activateBuff, icon, name }) {
   const [charge, setCharge] = useState(0); // Carga atual em segundos
@@ -14,7 +14,7 @@ function BuffButton({ buffId, buffInfo, activateBuff, icon, name }) {
     if (isActive) return;
 
     // Aumenta a carga
-    setCharge(prev => Math.min(prev + 0.1, MAX_CHARGE_SECONDS)); // Aumenta 100ms por clique
+    setCharge(prev => Math.min(prev + 0.3, MAX_CHARGE_SECONDS)); // Aumenta 100ms por clique
 
     // Reseta o timer para ativar o buff
     clearTimeout(chargeTimeoutRef.current);

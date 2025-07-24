@@ -60,6 +60,18 @@
   "upgrade_unlockAchievements_desc": "Desbloqueia a tela de Conquistas para exibir seus feitos.",
   "upgrade_unlockBuffs_name": "Turbinadores",
   "upgrade_unlockBuffs_desc": "Desbloqueia um painel com buffs temporários que podem ser ativados.",
+  "upgrade_strongerAutoClickers_name": "Ponteiros de Iridium",
+  "upgrade_strongerAutoClickers_desc": "Dobra a produção de todos os seus Auto Clickers.",
+  "upgrade_upgradeFooter_name": "Links Úteis",
+  "upgrade_upgradeFooter_desc": "Melhora o rodapé, adicionando links para a comunidade e outras opções.",
+  "upgrade_unlockChests_name": "Baús da Sorte",
+  "upgrade_unlockChests_desc": "Faz com que baús de tesouro apareçam ocasionalmente na tela.",
+  
+  "footer_discord": "Discord",
+  "footer_watch_ad": "Ver Anúncio (Bônus)",
+  "footer_other_links": "Outros Links",
+  "footer_link_wiki": "Wiki (Em Breve)",
+  "footer_link_github": "GitHub",
   
   "buffs_title": "Turbinadores",
   "buff_clickFrenzy_name": "Frenesi de Cliques",

@@ -43,7 +43,7 @@ export const upgradesData = {
     cost: 150,
     requiredScore: 70,
     applyEffect: (gameState) => {
-      return { ...gameState, clickValue: gameState.clickValue + 1 };
+      return { ...gameState, clickValue: gameState.clickValue + 4 };
     }
   },
   spinningCursors: {
@@ -81,6 +81,13 @@ export const upgradesData = {
     cost: 600,
     requiredScore: 300,
   },
+  upgradeFooter: {
+    id: 'upgradeFooter',
+    nameKey: 'upgrade_upgradeFooter_name',
+    descriptionKey: 'upgrade_upgradeFooter_desc',
+    cost: 600,
+    requiredScore: 600,
+  },
   strongerClicks2: {
     id: 'strongerClicks2',
     nameKey: 'upgrade_strongerClicks2_name',
@@ -88,7 +95,7 @@ export const upgradesData = {
     cost: 1500,
     requiredScore: 500,
     applyEffect: (gameState) => {
-      return { ...gameState, clickValue: gameState.clickValue + 8 };
+      return { ...gameState, clickValue: gameState.clickValue + 10 };
     }
   },
   criticalClicks: {
@@ -137,5 +144,25 @@ export const upgradesData = {
     cost: 10000,
     requiredScore: 5000,
   },
+  strongerAutoClickers: {
+    id: 'strongerAutoClickers',
+    nameKey: 'upgrade_strongerAutoClickers_name',
+    descriptionKey: 'upgrade_strongerAutoClickers_desc',
+    cost: 10000,
+    requiredScore: 5000,
+    applyEffect: (gameState) => {
+      const newBuildings = { ...gameState.buildings };
+      newBuildings.autoClicker.multiplier = 4;
+      return { ...gameState, buildings: newBuildings };
+    }
+  },
+  unlockChests: {
+    id: 'unlockChests',
+    nameKey: 'upgrade_unlockChests_name',
+    descriptionKey: 'upgrade_unlockChests_desc',
+    cost: 25000,
+    requiredScore: 7500,
+  },
+  
   
 };

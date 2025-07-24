@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { upgradesData } from './Data/upgradesData.js';
 import { minigamesData } from './Data/minigamesData.js';
 import { playSound } from './utils/audioManager';
@@ -15,6 +15,7 @@ import StatsModal from './components/StatsModal.jsx';
 import AchievementsIcon from './components/AchievementsIcon.jsx';
 import AchievementsModal from './components/AchievementsModal.jsx';
 import BuffsPanel from './components/BuffsPanel.jsx';
+import GoldenChest from './components/GoldenChest.jsx';
 import './styles/App.css';
 
 const getInitialAchievements = () => {
@@ -43,14 +44,17 @@ const initialGameState = {
     criticalClicks: { purchased: false, unlocked: false },
     gameBackground: { purchased: false, unlocked: false },
     unlockFooter: { purchased: false, unlocked: false },
+    upgradeFooter: { purchased: false, unlocked: false },
     unlockMinigame1: { purchased: false, unlocked: false },
     unlockStats: { purchased: false, unlocked: false },
     unlockAchievements: { purchased: false, unlocked: false },
     unlockBuffs: { purchased: false, unlocked: false },
+    strongerAutoClickers: { purchased: false, unlocked: false },
+    unlockChests: { purchased: false, unlocked: false },
   },
   buildings: {
-    autoClicker: { owned: 0, baseCost: 20, cps: 1 },
-    ponteiroPro: { owned: 0, baseCost: 100, cps: 5 },
+    autoClicker: { owned: 0, baseCost: 20, cps: 1, multiplier: 1 },
+    ponteiroPro: { owned: 0, baseCost: 100, cps: 5, multiplier: 1 },
   },
   stats: {
     totalClicks: 0,
@@ -75,6 +79,8 @@ function App() {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isAchievementsModalOpen, setIsAchievementsModalOpen] = useState(false);
   const [floatingNumbers, setFloatingNumbers] = useState([]);
+  const [goldenChest, setGoldenChest] = useState({ isVisible: false, top: 0, left: 0 });
+  const chestTimeoutRef = useRef(null)
   const [minigamesState, setMinigamesState] = useState({
     reactionGame: {
       isOpen: false,
@@ -131,36 +137,28 @@ function App() {
 
   const cursorCount = gameState.buildings.autoClicker.owned;
 
-  const recalculateCPS = useCallback(() => {
-    let totalCPS = 0;
-    for (const buildingId in gameState.buildings) {
-      const building = gameState.buildings[buildingId];
-      totalCPS += building.owned * building.cps;
-    }
-
-    if (gameState.buffs.cpsBoost.activeUntil > Date.now()) {
-      totalCPS *= gameState.buffs.cpsBoost.power;
-    }
-
-    setGameState(prev => ({ ...prev, cps: totalCPS }));
-  }, [gameState.buildings, gameState.buffs]);
-
   // Buff Management
-  useEffect(() => {
+    useEffect(() => {
     const buffInterval = setInterval(() => {
       let needsUpdate = false;
+      const now = Date.now();
+      
       for (const buffId in gameState.buffs) {
-        if (gameState.buffs[buffId].activeUntil < Date.now()) {
+        const buff = gameState.buffs[buffId];
+        
+        if (buff.activeUntil > 0 && buff.activeUntil < now) {
           needsUpdate = true;
         }
       }
+
       if (needsUpdate) {
         setGameState(prev => ({ ...prev }));
       }
     }, 1000);
 
     return () => clearInterval(buffInterval);
-  }, [gameState.buffs]);
+  }, [gameState.buffs]); 
+
 
   // Buff Activation
   const activateBuff = (buffId, chargedSeconds) => {
@@ -194,6 +192,59 @@ function App() {
     };
   }, []); 
 
+  // CHESTS
+const scheduleNextChest = useCallback(() => {
+    clearTimeout(chestTimeoutRef.current); 
+  
+    const interval = Math.floor(Math.random() * 30000) + 60000;
+
+    chestTimeoutRef.current = setTimeout(() => {
+      const top = Math.random() * 80 + 10 + '%'; 
+      const left = Math.random() * 80 + 10 + '%';
+      setGoldenChest({ isVisible: true, top, left });
+
+      chestTimeoutRef.current = setTimeout(() => {
+        setGoldenChest(prev => ({ ...prev, isVisible: false }));
+        scheduleNextChest(); 
+      }, 8000);
+    }, interval);
+  }, [gameState.upgrades.unlockChests.purchased]); 
+
+
+  useEffect(() => {
+    if (gameState.upgrades.unlockChests.purchased) {
+      scheduleNextChest();
+    }
+    return () => clearTimeout(chestTimeoutRef.current);
+  }, [gameState.upgrades.unlockChests.purchased, scheduleNextChest]); 
+
+
+  const handleGoldenChestClick = () => {
+    if (!goldenChest.isVisible) return;
+    
+    const reward = (gameState.cps * 60) + 13;
+    setGameState(prev => ({
+      ...prev,
+      score: prev.score + reward,
+    }));
+
+    const newFloatingNumber = {
+      id: Date.now() + Math.random(),
+      value: `+${Math.floor(reward).toLocaleString()}`,
+      x: parseInt(goldenChest.left, 10) * window.innerWidth / 100, 
+      y: parseInt(goldenChest.top, 10) * window.innerHeight / 100,
+      isCritical: true, 
+    };
+    setFloatingNumbers(prev => [...prev, newFloatingNumber]);
+    setTimeout(() => {
+      setFloatingNumbers(current => current.filter(n => n.id !== newFloatingNumber.id));
+    }, 1500);
+
+    setGoldenChest({ isVisible: false, top: 0, left: 0 });
+    clearTimeout(chestTimeoutRef.current);
+    scheduleNextChest();
+  };
+
   // Achievements
   useEffect(() => {
     const newAchievements = {};
@@ -213,32 +264,36 @@ function App() {
   // Loop Game 
   useEffect(() => {
     const gameInterval = setInterval(() => {
-      let pointsFromBuildingsThisSecond = {};
-      let totalPointsThisSecond = 0;
+      setGameState(prev => {
+        let baseCPS = 0;
+        const newPointsFromBuildings = { ...prev.stats.pointsFromBuildings };
+        for (const buildingId in prev.buildings) {
+          const building = prev.buildings[buildingId];
+          const productionThisSecond = building.owned * (building.cps * building.multiplier);
+          baseCPS += productionThisSecond;
+          newPointsFromBuildings[buildingId] = (newPointsFromBuildings[buildingId] || 0) + productionThisSecond;
+        }
 
-      for (const buildingId in gameState.buildings) {
-        const building = gameState.buildings[buildingId];
-        const points = building.owned * building.cps;
-        pointsFromBuildingsThisSecond[buildingId] = points;
-        totalPointsThisSecond += points;
-      }
+        let finalCPS = baseCPS;
+        if (prev.buffs.cpsBoost.activeUntil > Date.now()) {
+          finalCPS *= prev.buffs.cpsBoost.power;
+        }
 
-      setGameState(prev => ({...prev, score: prev.score + totalPointsThisSecond,
-        stats: {...prev.stats,
-          pointsFromBuildings: {
-            ...prev.stats.pointsFromBuildings,
-            autoClicker: prev.stats.pointsFromBuildings.autoClicker + (pointsFromBuildingsThisSecond.autoClicker || 0),
-            ponteiroPro: prev.stats.pointsFromBuildings.ponteiroPro + (pointsFromBuildingsThisSecond.ponteiroPro || 0),
+        return {
+          ...prev,
+          score: prev.score + finalCPS, // Adiciona os pontos corretos (com ou sem buff)
+          cps: finalCPS,               // ATUALIZA O DISPLAY com o valor correto
+          stats: {
+            ...prev.stats,
+            pointsFromBuildings: newPointsFromBuildings,
           },
-        },
-      }));
+        };
+      });
     }, 1000);
-    return () => clearInterval(gameInterval);
-  }, [gameState.buildings, gameState.cps]);
 
-  useEffect(() => {
-    recalculateCPS();
-  }, [gameState.buildings, recalculateCPS]);
+    // Limpeza do intervalo
+    return () => clearInterval(gameInterval);
+  }, []);
 
   // Verifica se há novos upgrades disponíveis
   useEffect(() => {
@@ -342,16 +397,6 @@ function App() {
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-  const handleReactionGameEnd = (minigameScore) => {
-    // Define a recompensa: 1000 pontos base por cada bug clicado
-    const reward = minigameScore * 1000; 
-
-    if (reward > 0) {
-      setGameState(prev => ({...prev,score: prev.score + reward}));
-      // Opcional: Adicionar um som de recompensa aqui!
-    }
-  };
-
   return (
     <div className="App">
       
@@ -394,6 +439,13 @@ function App() {
         <BuffsPanel gameState={gameState} activateBuff={activateBuff} />
       )}
 
+      {goldenChest.isVisible && (
+        <GoldenChest
+          position={{ top: goldenChest.top, left: goldenChest.left }}
+          onClick={handleGoldenChestClick}
+        />
+      )}
+
       <Sidebar 
         isOpen={isSidebarOpen} 
         gameState={gameState} 
@@ -411,7 +463,9 @@ function App() {
         isButtonUpgraded={gameState.upgrades.fancyButton?.purchased} 
         />
     
-      {gameState.upgrades.unlockFooter.purchased && <Footer />}
+      {gameState.upgrades.unlockFooter.purchased && (
+        <Footer isUpgraded={gameState.upgrades.upgradeFooter.purchased} />
+      )}
 
       {gameState.upgrades.unlockMinigame1.purchased && (
         <MinigameIcon onClick={() => openMinigame('reactionGame')} />

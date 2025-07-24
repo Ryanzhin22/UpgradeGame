@@ -60,6 +60,18 @@
   "upgrade_unlockAchievements_desc": "Unlocks the Achievements screen to display your accomplishments.",
   "upgrade_unlockBuffs_name": "Boosters",
   "upgrade_unlockBuffs_desc": "Unlocks a panel with temporary buffs that can be activated.",
+  "upgrade_strongerAutoClickers_name": "Iridium Pointers",
+  "upgrade_strongerAutoClickers_desc": "Doubles the production of all your Auto Clickers.",
+  "upgrade_upgradeFooter_name": "Useful Links",
+  "upgrade_upgradeFooter_desc": "Upgrades the footer, adding community links and other options.",
+  "upgrade_unlockChests_name": "Lucky Chests",
+  "upgrade_unlockChests_desc": "Makes treasure chests occasionally appear on the screen.",
+  
+  "footer_discord": "Discord",
+  "footer_watch_ad": "Watch Ad (Bonus)",
+  "footer_other_links": "Other Links",
+  "footer_link_wiki": "Wiki (Soon)",
+  "footer_link_github": "GitHub",
   
   "buffs_title": "Boosters",
   "buff_clickFrenzy_name": "Click Frenzy",
